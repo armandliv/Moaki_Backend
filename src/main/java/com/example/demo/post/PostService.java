@@ -1,0 +1,76 @@
+package com.example.demo.post;
+import com.example.demo.user.UserService;
+import com.example.demo.user.User;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import java.util.ArrayList;
+
+@Service
+public class PostService {
+    private final PostRepository repository;
+    private final UserService userService;
+    @Autowired
+    public PostService(PostRepository repository, UserService userService) {
+        this.repository = repository;
+        this.userService = userService;
+    }
+
+    public List<Post> getPosts() {
+        return repository.findAll();
+    }
+
+    public List<Post> getUserPosts(String username) {
+        return repository.findByUsername(username);
+    }
+
+    public List<Post> getFollowingPosts(String username) {
+        List<Post> posts = new ArrayList<>();
+        User user = userService.getUserByUsername(username);
+        for(String userId: user.getFollowingIds())
+        {
+            System.out.println(userId);
+            User followedUser = userService.getUserById(userId);
+            System.out.println("lalala");
+            System.out.println(followedUser.getId());
+            System.out.println("lalala");
+            System.out.println(followedUser.getUsername());
+            System.out.println("lalala");
+            posts.addAll(getUserPosts(followedUser.getUsername()));
+        }
+        return posts;
+    }
+
+    public Post getPostById(String id) {
+        return repository.findById(id).orElse(null);
+    }
+
+    public Post createPost(Post newPost) {
+        return repository.insert(newPost);
+    }
+
+    public boolean deletePost(String id) {
+        Post post = repository.findById(id).orElse(null);
+        if (post != null) {
+            repository.delete(post);
+            return true;
+        }
+        return false;
+    }
+
+    public Post updatePost(String id, String username, String locationId, String description, String photoPath, int score, int likes, List<String> commentIds) {
+        Post post = repository.findById(id).orElse(null);
+        if (post != null) {
+            post.setUsername(username);
+            post.setLocationId(locationId);
+            post.setDescription(description);
+            post.setPhotoPath(photoPath);
+            post.setScore(score);
+            post.setLikes(likes);
+            post.setCommentIds(commentIds);
+            repository.save(post);
+            return post;
+        }
+        return null;
+    }
+}

@@ -1,33 +1,61 @@
 package com.example.demo.user;
-
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDate;
-
+import java.util.List;
+@Document
 public class User {
-    private Long id;
+    @Id
+    private String id;
+    private String username;
+    private String password;
     private String name;
     private String email;
-    private LocalDate dob;
-    // private LocalDateTime createdAt;
+    private String bio;
+    private String profilePicturePath;
+    private boolean isOnline;
+    private List<String> postIds;
+    private List<String> followingIds;
 
     public User() {
 
     }
 
-    public User(Long id, String name, String email, LocalDate dob) {
+    public User(String id, String username, String password, String name, String email, String bio, String profilePicturePath, boolean isOnline, List<String> postIds, List<String> followingIds) {
         this.id = id;
+        this.username = username;
+        this.password = password;
         this.name = name;
         this.email = email;
-        this.dob = dob;
+        this.bio = bio;
+        this.profilePicturePath = profilePicturePath;
+        this.isOnline = isOnline;
+        this.postIds = postIds;
+        this.followingIds = followingIds;
     }
 
-    public User(String name, String email, LocalDate dob) {
+    public User(String username, String password, String name, String email, String bio, String profilePicturePath, boolean isOnline, List<String> postIds, List<String> followingIds) {
+        this.username = username;
+        this.password = password;
         this.name = name;
         this.email = email;
-        this.dob = dob;
+        this.bio = bio;
+        this.profilePicturePath = profilePicturePath;
+        this.isOnline = isOnline;
+        this.postIds = postIds;
+        this.followingIds = followingIds;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public String getName() {
@@ -38,12 +66,36 @@ public class User {
         return email;
     }
 
-    public LocalDate getDob() {
-        return dob;
+    public String getBio() {
+        return bio;
     }
 
-    public void setId(Long id) {
+    public String getProfilePicturePath() {
+        return profilePicturePath;
+    }
+
+    public boolean isOnline() {
+        return isOnline;
+    }
+
+    public List<String> getPostIds() {
+        return postIds;
+    }
+
+    public List<String> getFollowingIds() {
+        return followingIds;
+    }
+
+    public void setId(String id) {
         this.id = id;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public void setName(String name) {
@@ -54,17 +106,61 @@ public class User {
         this.email = email;
     }
 
-    public void setDob(LocalDate dob) {
-        this.dob = dob;
+    public void setBio(String bio) {
+        this.bio = bio;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", dob=" + dob +
-                '}';
+    public void setProfilePicturePath(String profilePicturePath) {
+        this.profilePicturePath = profilePicturePath;
     }
+
+    public void setOnline(boolean online) {
+        isOnline = online;
+    }
+
+    public void setPostIds(List<String> postIds) {
+        this.postIds = postIds;
+    }
+
+    public void setFollowingIds(List<String> followingIds) {
+        this.followingIds = followingIds;
+    }
+
+    public void addPostId(String postId) {
+        this.postIds.add(postId);
+    }
+
+    public void addFollowingId(String followingId) {
+        this.followingIds.add(followingId);
+    }
+
+    public void removePostId(String postId) {
+        this.postIds.remove(postId);
+    }
+
+    public void removeFollowingId(String followingId) {
+        this.followingIds.remove(followingId);
+    }
+
+    public void update(User user) {
+        this.username = user.getUsername();
+        this.password = user.getPassword();
+        this.name = user.getName();
+        this.email = user.getEmail();
+        this.bio = user.getBio();
+        this.profilePicturePath = user.getProfilePicturePath();
+        this.isOnline = user.isOnline();
+        this.postIds = user.getPostIds();
+        this.followingIds = user.getFollowingIds();
+    }
+
+    //    @Override
+    //    public String toString() {
+    //        return "User{" +
+    //                "id=" + id +
+    //                ", name='" + name + '\'' +
+    //                ", email='" + email + '\'' +
+    //                ", dob=" + dob +
+    //                '}';
+    //    }
 }
