@@ -20,21 +20,21 @@ public class DemoApplication {
 		SpringApplication.run(DemoApplication.class, args);
 	}
 
-//	@Bean
-//	CommandLineRunner commandLineRunner(UserRepository repository) {
-//		return args -> {
-//			User user = new User(
-//				"CosminUsername",
-//				"CosminPassword",
-//				"CosminName",
-//				"CosminEmail",
-//				"CosminBio",
-//				"CosminProfilePicturePath",
-//				true,
-//				List.of("1", "2", "3"),
-//				List.of("1", "2", "3")
-//			);
-//			repository.insert(user);
-//		};
-//	}
+	@Bean
+	CommandLineRunner commandLineRunner(UserRepository repository) {
+		return args -> {
+			User user = new User(
+				"CosminUsername",
+				"CosminPassword",
+				"CosminName",
+				"CosminEmail",
+				"CosminBio",
+				"CosminProfilePicturePath",
+				true,
+				List.of("1", "2", "3"),
+				List.of("1", "2", "3")
+			);
+			repository.insert(user);
+		};
+	}
 }
