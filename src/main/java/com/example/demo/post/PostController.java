@@ -35,7 +35,8 @@ public class PostController {
     }
 
     @PostMapping("/add")
-    public Post createPost(@RequestBody Post newPost) {
+    public Post createPost(@RequestBody PostRequest newPostRequest) {
+        Post newPost = postService.addImage(newPostRequest.getPost(), newPostRequest.getPhotoPath());
         return postService.createPost(newPost);
     }
 
@@ -46,7 +47,11 @@ public class PostController {
     }
 
     @PutMapping("/edit/{id}")
-    public Post updatePost(@PathVariable String id, @RequestBody Post updatedData) {
-        return postService.updatePost(id, updatedData.getUsername(), updatedData.getLocationId(), updatedData.getDescription(), updatedData.getPhotoPath(), updatedData.getScore(), updatedData.getLikes(), updatedData.getCommentIds());
+    public Post updatePost(@PathVariable String id, @RequestBody PostRequest updatedPostRequest) {
+        Post updatedData = postService.addImage(updatedPostRequest.getPost(), updatedPostRequest.getPhotoPath());
+        return postService.updatePost(id, updatedData.getUsername(), updatedData.getLocationId(), updatedData.getDescription(), updatedData.getImage(), updatedData.getScore(), updatedData.getLikes(), updatedData.getCommentIds());
     }
 }
+/* example of a post request:
+{"post":{"username":"CosminUsername5","locationId":"CosminLocationId","description":"CosminDescription","image":null,"score":5,"likes":1,"commentIds":["1","2","3"]}, "photoPath":"C:/Users/Armand/Pictures/Saved Pictures/dimi.jpg"}
+ */

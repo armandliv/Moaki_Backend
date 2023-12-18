@@ -9,7 +9,7 @@ public class Post {
     private String username;
     private String locationId;
     private String description;
-    private String photoPath;
+    private byte[] image;
     private int score;
     private int likes;
     private List<String> commentIds;
@@ -18,22 +18,22 @@ public class Post {
 
     }
 
-    public Post(String id, String username, String locationId, String description, String photoPath, int score, int likes, List<String> commentIds) {
+    public Post(String id, String username, String locationId, String description, byte[] image, int score, int likes, List<String> commentIds) {
         this.id = id;
         this.username = username;
         this.locationId = locationId;
         this.description = description;
-        this.photoPath = photoPath;
+        this.image = image;
         this.score = score;
         this.likes = likes;
         this.commentIds = commentIds;
     }
 
-    public Post(String username, String locationId, String description, String photoPath, int score, int likes, List<String> commentIds) {
+    public Post(String username, String locationId, String description, byte[] image, int score, int likes, List<String> commentIds) {
         this.username = username;
         this.locationId = locationId;
         this.description = description;
-        this.photoPath = photoPath;
+        this.image = image;
         this.score = score;
         this.likes = likes;
         this.commentIds = commentIds;
@@ -71,13 +71,9 @@ public class Post {
         this.description = description;
     }
 
-    public String getPhotoPath() {
-        return photoPath;
-    }
+    public byte[] getImage() { return image; }
 
-    public void setPhotoPath(String photoPath) {
-        this.photoPath = photoPath;
-    }
+    public void setImage(byte[] image) { this.image = image; }
 
     public int getScore() {
         return score;
@@ -123,7 +119,7 @@ public class Post {
         this.username = post.getUsername();
         this.locationId = post.getLocationId();
         this.description = post.getDescription();
-        this.photoPath = post.getPhotoPath();
+        this.image = post.getImage();
         this.score = post.getScore();
         this.likes = post.getLikes();
         this.commentIds = post.getCommentIds();

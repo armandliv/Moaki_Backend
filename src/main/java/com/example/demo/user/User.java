@@ -12,7 +12,8 @@ public class User {
     private String name;
     private String email;
     private String bio;
-    private String profilePicturePath;
+    //private String profilePicturePath;
+    private byte[] image;
     private boolean isOnline;
     private List<String> postIds;
     private List<String> followingIds;
@@ -21,26 +22,26 @@ public class User {
 
     }
 
-    public User(String id, String username, String password, String name, String email, String bio, String profilePicturePath, boolean isOnline, List<String> postIds, List<String> followingIds) {
+    public User(String id, String username, String password, String name, String email, String bio, byte[] image , boolean isOnline, List<String> postIds, List<String> followingIds) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.name = name;
         this.email = email;
         this.bio = bio;
-        this.profilePicturePath = profilePicturePath;
+        this.image = image;
         this.isOnline = isOnline;
         this.postIds = postIds;
         this.followingIds = followingIds;
     }
 
-    public User(String username, String password, String name, String email, String bio, String profilePicturePath, boolean isOnline, List<String> postIds, List<String> followingIds) {
+    public User(String username, String password, String name, String email, String bio, byte[] image, boolean isOnline, List<String> postIds, List<String> followingIds) {
         this.username = username;
         this.password = password;
         this.name = name;
         this.email = email;
         this.bio = bio;
-        this.profilePicturePath = profilePicturePath;
+        this.image = image;
         this.isOnline = isOnline;
         this.postIds = postIds;
         this.followingIds = followingIds;
@@ -70,8 +71,8 @@ public class User {
         return bio;
     }
 
-    public String getProfilePicturePath() {
-        return profilePicturePath;
+    public byte[] getImage() {
+        return image;
     }
 
     public boolean isOnline() {
@@ -110,8 +111,8 @@ public class User {
         this.bio = bio;
     }
 
-    public void setProfilePicturePath(String profilePicturePath) {
-        this.profilePicturePath = profilePicturePath;
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 
     public void setOnline(boolean online) {
@@ -148,7 +149,7 @@ public class User {
         this.name = user.getName();
         this.email = user.getEmail();
         this.bio = user.getBio();
-        this.profilePicturePath = user.getProfilePicturePath();
+        this.image = user.getImage();
         this.isOnline = user.isOnline();
         this.postIds = user.getPostIds();
         this.followingIds = user.getFollowingIds();
@@ -164,3 +165,5 @@ public class User {
     //                '}';
     //    }
 }
+
+

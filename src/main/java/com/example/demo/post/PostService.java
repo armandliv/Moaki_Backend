@@ -1,6 +1,11 @@
 package com.example.demo.post;
 import com.example.demo.user.UserService;
 import com.example.demo.user.User;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,11 +36,6 @@ public class PostService {
         {
             System.out.println(userId);
             User followedUser = userService.getUserById(userId);
-            System.out.println("lalala");
-            System.out.println(followedUser.getId());
-            System.out.println("lalala");
-            System.out.println(followedUser.getUsername());
-            System.out.println("lalala");
             posts.addAll(getUserPosts(followedUser.getUsername()));
         }
         return posts;
@@ -58,13 +58,13 @@ public class PostService {
         return false;
     }
 
-    public Post updatePost(String id, String username, String locationId, String description, String photoPath, int score, int likes, List<String> commentIds) {
+    public Post updatePost(String id, String username, String locationId, String description, byte[] image, int score, int likes, List<String> commentIds) {
         Post post = repository.findById(id).orElse(null);
         if (post != null) {
             post.setUsername(username);
             post.setLocationId(locationId);
             post.setDescription(description);
-            post.setPhotoPath(photoPath);
+            post.setImage(image);
             post.setScore(score);
             post.setLikes(likes);
             post.setCommentIds(commentIds);
@@ -72,5 +72,17 @@ public class PostService {
             return post;
         }
         return null;
+    }
+
+    public Post addImage(Post post, String imagePath) {
+        Path path = Paths.get(imagePath);
+        byte[] image;
+        try{
+            image = Files.readAllBytes(path);
+        }catch(IOException e){
+            image = null;
+        }
+        post.setImage(image);
+        return post;
     }
 }

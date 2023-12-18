@@ -40,7 +40,8 @@ public class UserController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<User> createUser(@RequestBody User newUser) {
+    public ResponseEntity<User> createUser(@RequestBody UserRequest newUserRequest) {
+        User newUser = userService.addImage(newUserRequest.getUser(),newUserRequest.getProfilePicturePath());
         User createdUser = userService.createUser(newUser);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
@@ -52,8 +53,12 @@ public class UserController {
     }
 
     @PutMapping("/edit/{username}")
-    public User updateUser(@PathVariable String username, @RequestBody User updatedData) {
-        User user = userService.updateUser(username, updatedData.getName(), updatedData.getEmail(), updatedData.getBio(), updatedData.getProfilePicturePath());
+    public User updateUser(@PathVariable String username, @RequestBody UserRequest updatedUserRequest) {
+        User updatedData = userService.addImage(updatedUserRequest.getUser(),updatedUserRequest.getProfilePicturePath());
+        User user = userService.updateUser(username, updatedData.getName(), updatedData.getEmail(), updatedData.getBio(), updatedData.getImage());
         return user;
     }
 }
+/* UserRequest JSON example:
+{"user":{"username":"CosminUsername5","password":"CosminPassword","name":"CosminName","email":"CosminEmail","bio":"CosminBio","image":"null","postIds":["6575c50399a7eb702d4a6cdd"],"followingIds":["6575140d3dda26791a0b78c1"],"online":true}, "profilePicturePath":"C:/Users/Armand/Pictures/Saved Pictures/dimi.jpg"}
+ */

@@ -7,6 +7,10 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Service
 public class UserService {
@@ -39,18 +43,31 @@ public class UserService {
         return false;
     }
 
-    public User updateUser(String username, String name, String email, String bio, String profilePicturePath) {
+    public User updateUser(String username, String name, String email, String bio, byte[] image) {
         User user = repository.findByUsername(username);
         if (user != null) {
             user.setName(name);
             user.setEmail(email);
             user.setBio(bio);
-            user.setProfilePicturePath(profilePicturePath);
+            user.setImage(image);
             repository.save(user);
             return user;
         }
         return null;
     }
+
+    public User addImage(User user, String imagePath) {
+        Path path = Paths.get(imagePath);
+        byte[] image;
+        try{
+            image = Files.readAllBytes(path);
+        }catch(IOException e){
+            image = null;
+        }
+        user.setImage(image);
+        return user;
+    }
+
 }
 
 //new User(
