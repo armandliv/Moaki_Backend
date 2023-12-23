@@ -3,6 +3,7 @@ import com.example.demo.user.UserService;
 import com.example.demo.user.User;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -58,7 +59,7 @@ public class PostService {
         return false;
     }
 
-    public Post updatePost(String id, String username, String locationId, String description, byte[] image, int score, int likes, List<String> commentIds) {
+    public Post updatePost(String id, String username, String locationId, String description, String image, int score, int likes, List<String> commentIds) {
         Post post = repository.findById(id).orElse(null);
         if (post != null) {
             post.setUsername(username);
@@ -76,9 +77,9 @@ public class PostService {
 
     public Post addImage(Post post, String imagePath) {
         Path path = Paths.get(imagePath);
-        byte[] image;
+        String image;
         try{
-            image = Files.readAllBytes(path);
+            image = new String(Files.readAllBytes(path), StandardCharsets.UTF_8);
         }catch(IOException e){
             image = null;
         }

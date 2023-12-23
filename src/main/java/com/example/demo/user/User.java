@@ -13,7 +13,7 @@ public class User {
     private String email;
     private String bio;
     //private String profilePicturePath;
-    private byte[] image;
+    private String image;
     private boolean isOnline;
     private List<String> postIds;
     private List<String> followingIds;
@@ -22,7 +22,7 @@ public class User {
 
     }
 
-    public User(String id, String username, String password, String name, String email, String bio, byte[] image , boolean isOnline, List<String> postIds, List<String> followingIds) {
+    public User(String id, String username, String password, String name, String email, String bio, String image , boolean isOnline, List<String> postIds, List<String> followingIds) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -35,7 +35,7 @@ public class User {
         this.followingIds = followingIds;
     }
 
-    public User(String username, String password, String name, String email, String bio, byte[] image, boolean isOnline, List<String> postIds, List<String> followingIds) {
+    public User(String username, String password, String name, String email, String bio, String image, boolean isOnline, List<String> postIds, List<String> followingIds) {
         this.username = username;
         this.password = password;
         this.name = name;
@@ -71,7 +71,7 @@ public class User {
         return bio;
     }
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
@@ -111,7 +111,7 @@ public class User {
         this.bio = bio;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 

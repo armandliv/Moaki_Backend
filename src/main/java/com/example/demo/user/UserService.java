@@ -1,10 +1,8 @@
 package com.example.demo.user;
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 
-import java.time.LocalDate;
-import java.time.Month;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.io.IOException;
@@ -43,7 +41,7 @@ public class UserService {
         return false;
     }
 
-    public User updateUser(String username, String name, String email, String bio, byte[] image) {
+    public User updateUser(String username, String name, String email, String bio, String image) {
         User user = repository.findByUsername(username);
         if (user != null) {
             user.setName(name);
@@ -58,9 +56,9 @@ public class UserService {
 
     public User addImage(User user, String imagePath) {
         Path path = Paths.get(imagePath);
-        byte[] image;
+        String image;
         try{
-            image = Files.readAllBytes(path);
+            image = new String(Files.readAllBytes(path), StandardCharsets.UTF_8);
         }catch(IOException e){
             image = null;
         }

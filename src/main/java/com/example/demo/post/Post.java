@@ -9,7 +9,7 @@ public class Post {
     private String username;
     private String locationId;
     private String description;
-    private byte[] image;
+    private String image;
     private int score;
     private int likes;
     private List<String> commentIds;
@@ -18,7 +18,7 @@ public class Post {
 
     }
 
-    public Post(String id, String username, String locationId, String description, byte[] image, int score, int likes, List<String> commentIds) {
+    public Post(String id, String username, String locationId, String description, String image, int score, int likes, List<String> commentIds) {
         this.id = id;
         this.username = username;
         this.locationId = locationId;
@@ -29,7 +29,7 @@ public class Post {
         this.commentIds = commentIds;
     }
 
-    public Post(String username, String locationId, String description, byte[] image, int score, int likes, List<String> commentIds) {
+    public Post(String username, String locationId, String description, String image, int score, int likes, List<String> commentIds) {
         this.username = username;
         this.locationId = locationId;
         this.description = description;
@@ -71,9 +71,9 @@ public class Post {
         this.description = description;
     }
 
-    public byte[] getImage() { return image; }
+    public String getImage() { return image; }
 
-    public void setImage(byte[] image) { this.image = image; }
+    public void setImage(String image) { this.image = image; }
 
     public int getScore() {
         return score;
