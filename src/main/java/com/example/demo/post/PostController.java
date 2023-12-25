@@ -29,15 +29,19 @@ public class PostController {
         return postService.getFollowingPosts(username);
     }
 
+    @GetMapping("/get/location/{locationId}")
+    public List<Post> getPostsByLocation(@PathVariable String locationId) {
+        return postService.getPostsByLocation(locationId);
+    }
+
     @GetMapping("/get/{id}")
     public Post getPostById(@PathVariable String id) {
         return postService.getPostById(id);
     }
 
     @PostMapping("/add")
-    public Post createPost(@RequestBody PostRequest newPostRequest) {
-        Post newPost = postService.addImage(newPostRequest.getPost(), newPostRequest.getPhotoPath());
-        return postService.createPost(newPost);
+    public Post createPost(@RequestBody Post newPostRequest) {
+        return postService.createPost(newPostRequest);
     }
 
     @DeleteMapping("/delete/{id}")

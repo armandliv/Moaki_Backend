@@ -46,6 +46,10 @@ public class PostService {
         return repository.findById(id).orElse(null);
     }
 
+    public List<Post> getPostsByLocation(String locationId) {
+        return repository.findByLocationId(locationId);
+    }
+
     public Post createPost(Post newPost) {
         return repository.insert(newPost);
     }
