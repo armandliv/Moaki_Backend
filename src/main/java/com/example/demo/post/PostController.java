@@ -51,8 +51,7 @@ public class PostController {
     }
 
     @PutMapping("/edit/{id}")
-    public Post updatePost(@PathVariable String id, @RequestBody PostRequest updatedPostRequest) {
-        Post updatedData = postService.addImage(updatedPostRequest.getPost(), updatedPostRequest.getPhotoPath());
+    public Post updatePost(@PathVariable String id, @RequestBody Post updatedData) {
         return postService.updatePost(id, updatedData.getUsername(), updatedData.getLocationId(), updatedData.getDescription(), updatedData.getImage(), updatedData.getScore(), updatedData.getLikes(), updatedData.getCommentIds());
     }
 }
