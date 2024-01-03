@@ -111,6 +111,20 @@ public class UserService {
         return null;
     }
 
+    public User removePostId(String username, String postId) {
+        User user = repository.findByUsername(username);
+        if (user != null) {
+            user.removePostId(postId);
+            if(user.getPostIds() == null)
+            {
+                user.setPostIds(new ArrayList<>());
+            }
+            repository.save(user);
+            return user;
+        }
+        return null;
+    }
+
 }
 
 //new User(
