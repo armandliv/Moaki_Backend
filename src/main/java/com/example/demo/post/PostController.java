@@ -1,5 +1,6 @@
 package com.example.demo.post;
 
+import com.example.demo.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -29,6 +30,11 @@ public class PostController {
         return postService.getFollowingPosts(username);
     }
 
+    @GetMapping("/morePosts/{username}")
+    public List<Post> getMorePosts(@PathVariable String username) {
+        return postService.getMorePosts(username);
+    }
+
     @GetMapping("/get/location/{locationId}")
     public List<Post> getPostsByLocation(@PathVariable String locationId) {
         return postService.getPostsByLocation(locationId);
@@ -52,7 +58,42 @@ public class PostController {
 
     @PutMapping("/edit/{id}")
     public Post updatePost(@PathVariable String id, @RequestBody Post updatedData) {
-        return postService.updatePost(id, updatedData.getUsername(), updatedData.getLocationId(), updatedData.getDescription(), updatedData.getImage(), updatedData.getScore(), updatedData.getLikes(), updatedData.getCommentIds());
+        return postService.updatePost(id, updatedData.getUsername(), updatedData.getLocationId(), updatedData.getDescription(), updatedData.getImage(), updatedData.getScore(), updatedData.getLikeIds(), updatedData.getCommentIds());
+    }
+
+    @GetMapping("addLike/{postId}/{username}")
+    public Post addLike(@PathVariable String postId, @PathVariable String username) {
+        return postService.addLike(postId, username);
+    }
+
+    @GetMapping("removeLike/{postId}/{username}")
+    public Post removeLike(@PathVariable String postId, @PathVariable String username) {
+        return postService.removeLike(postId, username);
+    }
+
+    @GetMapping("addComment/{postId}/{commentId}")
+    public Post addComment(@PathVariable String postId, @PathVariable String commentId) {
+        return postService.addComment(postId, commentId);
+    }
+
+    @GetMapping("removeComment/{postId}/{commentId}")
+    public Post removeComment(@PathVariable String postId, @PathVariable String commentId) {
+        return postService.removeComment(postId, commentId);
+    }
+
+    @GetMapping("/isLiked/{postId}/{username}")
+    public boolean isLiked(@PathVariable String postId, @PathVariable String username) {
+        return postService.isLiked(postId, username);
+    }
+
+    @GetMapping("/getNumberOfLikes/{postId}")
+    public int getNumberOfLikes(@PathVariable String postId) {
+        return postService.getNumberOfLikes(postId);
+    }
+
+    @GetMapping("/getLikes/{postId}")
+    public List<String> getLikes(@PathVariable String postId) {
+        return postService.getLikes(postId);
     }
 }
 /* example of a post request:

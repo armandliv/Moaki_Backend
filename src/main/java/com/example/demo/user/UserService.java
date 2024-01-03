@@ -3,6 +3,7 @@ package com.example.demo.user;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.io.IOException;
@@ -29,6 +30,10 @@ public class UserService {
     }
 
     public User createUser(User newUser) {
+        //check if username already exists
+        if (repository.findByUsername(newUser.getUsername()) != null) {
+            return null;
+        }
         return repository.insert(newUser);
     }
 
@@ -66,6 +71,76 @@ public class UserService {
         return user;
     }
 
+    public User followUser(String username, String followedUsername) {
+        User user = repository.findByUsername(username);
+        User followedUser = repository.findByUsername(followedUsername);
+        if (user != null && followedUser != null) {
+            if(user.getFollowingIds() == null)
+            {
+                user.setFollowingIds(new ArrayList<>());
+            }
+            user.addFollowingId(followedUser.getId());
+            repository.save(user);
+            return user;
+        }
+        return null;
+    }
+
+    public User unfollowUser(String username, String followedUsername) {
+        User user = repository.findByUsername(username);
+        User followedUser = repository.findByUsername(followedUsername);
+        if (user != null && followedUser != null) {
+            user.removeFollowingId(followedUser.getId());
+            if(user.getFollowingIds() == null)
+            {
+                user.setFollowingIds(new ArrayList<>());
+            }
+            repository.save(user);
+            return user;
+        }
+        return null;
+    }
+
+    public User addPostId(String username, String postId) {
+        User user = repository.findByUsername(username);
+        if (user != null) {
+            if(user.getPostIds() == null)
+            {
+                user.setPostIds(new ArrayList<>());
+            }
+            user.addPostId(postId);
+            repository.save(user);
+            return user;
+        }
+        return null;
+    }
+
+    public User removePostId(String username, String postId) {
+        User user = repository.findByUsername(username);
+        if (user != null) {
+            user.removePostId(postId);
+            if(user.getPostIds() == null)
+            {
+                user.setPostIds(new ArrayList<>());
+            }
+            repository.save(user);
+            return user;
+        }
+        return null;
+    }
+
+    public boolean isFollowing(String username, String followedUsername) {
+        User user = repository.findByUsername(username);
+        User followedUser = repository.findByUsername(followedUsername);
+        if (user != null && followedUser != null) {
+            if(user.getFollowingIds() == null)
+            {
+                user.setFollowingIds(new ArrayList<>());
+            }
+            return user.getFollowingIds().contains(followedUser.getId());
+        }
+        return false;
+    }
 }
 
 //new User(

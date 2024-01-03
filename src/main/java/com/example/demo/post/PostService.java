@@ -42,6 +42,21 @@ public class PostService {
         return posts;
     }
 
+    public List<Post> getMorePosts(String username) {
+        List<Post> allPosts = repository.findAll();
+        List<Post> posts = new ArrayList<>();
+        User user = userService.getUserByUsername(username);
+        for(Post post: allPosts)
+        {
+            String userId = userService.getUserByUsername(post.getUsername()).getId();
+            if(!user.getFollowingIds().contains(userId) && !post.getUsername().equals(username))
+            {
+                posts.add(post);
+            }
+        }
+        return posts;
+    }
+
     public Post getPostById(String id) {
         return repository.findById(id).orElse(null);
     }
@@ -63,7 +78,7 @@ public class PostService {
         return false;
     }
 
-    public Post updatePost(String id, String username, String locationId, String description, String image, int score, int likes, List<String> commentIds) {
+    public Post updatePost(String id, String username, String locationId, String description, String image, int score, List<String> likeIds, List<String> commentIds) {
         Post post = repository.findById(id).orElse(null);
         if (post != null) {
             post.setUsername(username);
@@ -71,7 +86,7 @@ public class PostService {
             post.setDescription(description);
             post.setImage(image);
             post.setScore(score);
-            post.setLikes(likes);
+            post.setLikeIds(likeIds);
             post.setCommentIds(commentIds);
             repository.save(post);
             return post;
@@ -89,5 +104,113 @@ public class PostService {
         }
         post.setImage(image);
         return post;
+    }
+
+    public Post addLike(String postId, String username) {
+        String userId = userService.getUserByUsername(username).getId();
+        Post post = repository.findById(postId).orElse(null);
+        if (post != null) {
+            if(post.getLikeIds() == null)
+            {
+                post.setLikeIds(new ArrayList<>());
+            }
+            // check if user already liked the post
+            if (post.getLikeIds().contains(userId)) {
+                return null;
+            }
+            post.addLike(userId);
+            repository.save(post);
+            return post;
+        }
+        return null;
+    }
+
+    public Post removeLike(String postId, String username) {
+        String userId = userService.getUserByUsername(username).getId();
+        Post post = repository.findById(postId).orElse(null);
+        if (post != null) {
+            // check if user liked the post
+            if (!post.getLikeIds().contains(userId)) {
+                return null;
+            }
+            post.removeLike(userId);
+            if(post.getLikeIds() == null)
+            {
+                post.setLikeIds(new ArrayList<>());
+            }
+            repository.save(post);
+            return post;
+        }
+        return null;
+    }
+
+    public Post addComment(String postId, String commentId) {
+        Post post = repository.findById(postId).orElse(null);
+        if (post != null) {
+            if(post.getCommentIds() == null)
+            {
+                post.setCommentIds(new ArrayList<>());
+            }
+            post.addCommentId(commentId);
+            repository.save(post);
+            return post;
+        }
+        return null;
+    }
+
+    public Post removeComment(String postId, String commentId) {
+        Post post = repository.findById(postId).orElse(null);
+        if (post != null) {
+            post.removeCommentId(commentId);
+            if(post.getCommentIds() == null)
+            {
+                post.setCommentIds(new ArrayList<>());
+            }
+            repository.save(post);
+            return post;
+        }
+        return null;
+    }
+
+    public boolean isLiked(String postId, String username) {
+        String userId = userService.getUserByUsername(username).getId();
+        Post post = repository.findById(postId).orElse(null);
+        if (post != null) {
+            if(post.getLikeIds() == null)
+            {
+                post.setLikeIds(new ArrayList<>());
+            }
+            return post.getLikeIds().contains(userId);
+        }
+        return false;
+    }
+
+    public int getNumberOfLikes(String postId) {
+        Post post = repository.findById(postId).orElse(null);
+        if (post != null) {
+            if(post.getLikeIds() == null)
+            {
+                post.setLikeIds(new ArrayList<>());
+            }
+            return post.getNumberOfLikes();
+        }
+        return 0;
+    }
+
+    public List<String> getLikes(String postId) {
+        Post post = repository.findById(postId).orElse(null);
+        if (post != null) {
+            if(post.getLikeIds() == null)
+            {
+                post.setLikeIds(new ArrayList<>());
+            }
+            List<String> usernames = new ArrayList<>();
+            for(String userId: post.getLikeIds())
+            {
+                usernames.add(userService.getUserById(userId).getUsername());
+            }
+            return usernames;
+        }
+        return null;
     }
 }

@@ -43,6 +43,10 @@ public class UserController {
     public ResponseEntity<User> createUser(@RequestBody UserRequest newUserRequest) {
         User newUser = userService.addImage(newUserRequest.getUser(),newUserRequest.getProfilePicturePath());
         User createdUser = userService.createUser(newUser);
+        // createdUser is null if the username already exists
+        if (createdUser == null) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
@@ -57,6 +61,35 @@ public class UserController {
         User updatedData = userService.addImage(updatedUserRequest.getUser(),updatedUserRequest.getProfilePicturePath());
         User user = userService.updateUser(username, updatedData.getName(), updatedData.getEmail(), updatedData.getBio(), updatedData.getImage());
         return user;
+    }
+
+    @GetMapping("/follow/{username}/{usernameToFollow}")
+    public User followUser(@PathVariable String username, @PathVariable String usernameToFollow) {
+        User user = userService.followUser(username, usernameToFollow);
+        return user;
+    }
+
+    @GetMapping("/unfollow/{username}/{usernameToUnfollow}")
+    public User unfollowUser(@PathVariable String username, @PathVariable String usernameToUnfollow) {
+        User user = userService.unfollowUser(username, usernameToUnfollow);
+        return user;
+    }
+
+    @GetMapping("/addPost/{username}/{postId}")
+    public User addPost(@PathVariable String username, @PathVariable String postId) {
+        User user = userService.addPostId(username, postId);
+        return user;
+    }
+
+    @GetMapping("/removePost/{username}/{postId}")
+    public User removePost(@PathVariable String username, @PathVariable String postId) {
+        User user = userService.removePostId(username, postId);
+        return user;
+    }
+
+    @GetMapping("/isFollowing/{username}/{followedUsername}")
+    public boolean isFollowing(@PathVariable String username, @PathVariable String followedUsername) {
+        return userService.isFollowing(username, followedUsername);
     }
 }
 /* UserRequest JSON example:
