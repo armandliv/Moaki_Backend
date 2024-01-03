@@ -70,6 +70,11 @@ public class PostController {
         return postService.addComment(postId, commentId);
     }
 
+    @GetMapping("removeComment/{postId}/{commentId}")
+    public Post removeComment(@PathVariable String postId, @PathVariable String commentId) {
+        return postService.removeComment(postId, commentId);
+    }
+
 }
 /* example of a post request:
 {"post":{"username":"CosminUsername5","locationId":"CosminLocationId","description":"CosminDescription","image":null,"score":5,"likes":1,"commentIds":["1","2","3"]}, "photoPath":"C:/Users/Armand/Pictures/Saved Pictures/dimi.jpg"}

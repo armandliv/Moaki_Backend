@@ -143,5 +143,19 @@ public class PostService {
         return null;
     }
 
+    public Post removeComment(String postId, String commentId) {
+        Post post = repository.findById(postId).orElse(null);
+        if (post != null) {
+            post.removeCommentId(commentId);
+            if(post.getCommentIds() == null)
+            {
+                post.setCommentIds(new ArrayList<>());
+            }
+            repository.save(post);
+            return post;
+        }
+        return null;
+    }
+
 
 }
