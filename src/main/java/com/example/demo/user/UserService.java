@@ -97,6 +97,20 @@ public class UserService {
         return null;
     }
 
+    public User addPostId(String username, String postId) {
+        User user = repository.findByUsername(username);
+        if (user != null) {
+            if(user.getPostIds() == null)
+            {
+                user.setPostIds(new ArrayList<>());
+            }
+            user.addPostId(postId);
+            repository.save(user);
+            return user;
+        }
+        return null;
+    }
+
 }
 
 //new User(
