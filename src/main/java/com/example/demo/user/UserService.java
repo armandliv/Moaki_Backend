@@ -125,6 +125,19 @@ public class UserService {
         return null;
     }
 
+    public boolean isFollowing(String username, String followedUsername) {
+        User user = repository.findByUsername(username);
+        User followedUser = repository.findByUsername(followedUsername);
+        if (user != null && followedUser != null) {
+            if(user.getFollowingIds() == null)
+            {
+                user.setFollowingIds(new ArrayList<>());
+            }
+            return user.getFollowingIds().contains(followedUser.getId());
+        }
+        return false;
+    }
+
 }
 
 //new User(
