@@ -42,6 +42,22 @@ public class PostService {
         return posts;
     }
 
+    public List<Post> getMorePosts(String username) {
+        List<Post> allPosts = repository.findAll();
+        List<Post> posts = new ArrayList<>();
+        User user = userService.getUserByUsername(username);
+        for(Post post: allPosts)
+        {
+            String userId = userService.getUserByUsername(post.getUsername()).getId();
+            if(!user.getFollowingIds().contains(userId) && !post.getUsername().equals(username))
+            {
+                posts.add(post);
+            }
+        }
+        return posts;
+    }
+
+
     public Post getPostById(String id) {
         return repository.findById(id).orElse(null);
     }
@@ -198,6 +214,4 @@ public class PostService {
         }
         return null;
     }
-
-
 }

@@ -29,6 +29,12 @@ public class PostController {
         return postService.getFollowingPosts(username);
     }
 
+    @GetMapping("/morePosts/{username}")
+    public List<Post> getMorePosts(@PathVariable String username) {
+        return postService.getMorePosts(username);
+    }
+
+
     @GetMapping("/get/location/{locationId}")
     public List<Post> getPostsByLocation(@PathVariable String locationId) {
         return postService.getPostsByLocation(locationId);
@@ -89,7 +95,6 @@ public class PostController {
     public List<String> getLikes(@PathVariable String postId) {
         return postService.getLikes(postId);
     }
-
 }
 /* example of a post request:
 {"post":{"username":"CosminUsername5","locationId":"CosminLocationId","description":"CosminDescription","image":null,"score":5,"likes":1,"commentIds":["1","2","3"]}, "photoPath":"C:/Users/Armand/Pictures/Saved Pictures/dimi.jpg"}
