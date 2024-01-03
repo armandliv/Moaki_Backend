@@ -58,6 +58,12 @@ public class UserController {
         User user = userService.updateUser(username, updatedData.getName(), updatedData.getEmail(), updatedData.getBio(), updatedData.getImage());
         return user;
     }
+
+    @GetMapping("/follow/{username}/{usernameToFollow}")
+    public User followUser(@PathVariable String username, @PathVariable String usernameToFollow) {
+        User user = userService.followUser(username, usernameToFollow);
+        return user;
+    }
 }
 /* UserRequest JSON example:
 {"user":{"username":"CosminUsername5","password":"CosminPassword","name":"CosminName","email":"CosminEmail","bio":"CosminBio","image":"null","postIds":["6575c50399a7eb702d4a6cdd"],"followingIds":["6575140d3dda26791a0b78c1"],"online":true}, "profilePicturePath":"C:/Users/Armand/Pictures/Saved Pictures/dimi.jpg"}

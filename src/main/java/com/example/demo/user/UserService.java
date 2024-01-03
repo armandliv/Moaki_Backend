@@ -3,6 +3,7 @@ package com.example.demo.user;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.io.IOException;
@@ -64,6 +65,21 @@ public class UserService {
         }
         user.setImage(image);
         return user;
+    }
+
+    public User followUser(String username, String followedUsername) {
+        User user = repository.findByUsername(username);
+        User followedUser = repository.findByUsername(followedUsername);
+        if (user != null && followedUser != null) {
+            if(user.getFollowingIds() == null)
+            {
+                user.setFollowingIds(new ArrayList<>());
+            }
+            user.addFollowingId(followedUser.getId());
+            repository.save(user);
+            return user;
+        }
+        return null;
     }
 
 }
