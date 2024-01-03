@@ -96,6 +96,8 @@ public class PostController {
         return postService.getLikes(postId);
     }
 }
-/* example of a post request:
+/* example of a post:
+{"username":"CosminUsername5","locationId":"CosminLocationId","description":"CosminDescription","image":null,"score":5,"likeIds":["6575140d3dda26791a0b78c1"],"commentIds":["1","2","3"]}
+with post request:
 {"post":{"username":"CosminUsername5","locationId":"CosminLocationId","description":"CosminDescription","image":null,"score":5,"likes":1,"commentIds":["1","2","3"]}, "photoPath":"C:/Users/Armand/Pictures/Saved Pictures/dimi.jpg"}
  */
