@@ -75,6 +75,11 @@ public class PostController {
         return postService.removeComment(postId, commentId);
     }
 
+    @GetMapping("/isLiked/{postId}/{username}")
+    public boolean isLiked(@PathVariable String postId, @PathVariable String username) {
+        return postService.isLiked(postId, username);
+    }
+
 }
 /* example of a post request:
 {"post":{"username":"CosminUsername5","locationId":"CosminLocationId","description":"CosminDescription","image":null,"score":5,"likes":1,"commentIds":["1","2","3"]}, "photoPath":"C:/Users/Armand/Pictures/Saved Pictures/dimi.jpg"}

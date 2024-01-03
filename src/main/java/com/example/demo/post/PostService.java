@@ -157,5 +157,18 @@ public class PostService {
         return null;
     }
 
+    public boolean isLiked(String postId, String username) {
+        String userId = userService.getUserByUsername(username).getId();
+        Post post = repository.findById(postId).orElse(null);
+        if (post != null) {
+            if(post.getLikeIds() == null)
+            {
+                post.setLikeIds(new ArrayList<>());
+            }
+            return post.getLikeIds().contains(userId);
+        }
+        return false;
+    }
+
 
 }
