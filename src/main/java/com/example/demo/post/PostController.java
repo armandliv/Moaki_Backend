@@ -80,6 +80,16 @@ public class PostController {
         return postService.isLiked(postId, username);
     }
 
+    @GetMapping("/getNumberOfLikes/{postId}")
+    public int getNumberOfLikes(@PathVariable String postId) {
+        return postService.getNumberOfLikes(postId);
+    }
+
+    @GetMapping("/getLikes/{postId}")
+    public List<String> getLikes(@PathVariable String postId) {
+        return postService.getLikes(postId);
+    }
+
 }
 /* example of a post request:
 {"post":{"username":"CosminUsername5","locationId":"CosminLocationId","description":"CosminDescription","image":null,"score":5,"likes":1,"commentIds":["1","2","3"]}, "photoPath":"C:/Users/Armand/Pictures/Saved Pictures/dimi.jpg"}

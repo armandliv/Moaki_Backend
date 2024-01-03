@@ -170,5 +170,34 @@ public class PostService {
         return false;
     }
 
+    public int getNumberOfLikes(String postId) {
+        Post post = repository.findById(postId).orElse(null);
+        if (post != null) {
+            if(post.getLikeIds() == null)
+            {
+                post.setLikeIds(new ArrayList<>());
+            }
+            return post.getNumberOfLikes();
+        }
+        return 0;
+    }
+
+    public List<String> getLikes(String postId) {
+        Post post = repository.findById(postId).orElse(null);
+        if (post != null) {
+            if(post.getLikeIds() == null)
+            {
+                post.setLikeIds(new ArrayList<>());
+            }
+            List<String> usernames = new ArrayList<>();
+            for(String userId: post.getLikeIds())
+            {
+                usernames.add(userService.getUserById(userId).getUsername());
+            }
+            return usernames;
+        }
+        return null;
+    }
+
 
 }
