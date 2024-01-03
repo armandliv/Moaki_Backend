@@ -129,5 +129,19 @@ public class PostService {
         return null;
     }
 
+    public Post addComment(String postId, String commentId) {
+        Post post = repository.findById(postId).orElse(null);
+        if (post != null) {
+            if(post.getCommentIds() == null)
+            {
+                post.setCommentIds(new ArrayList<>());
+            }
+            post.addCommentId(commentId);
+            repository.save(post);
+            return post;
+        }
+        return null;
+    }
+
 
 }
