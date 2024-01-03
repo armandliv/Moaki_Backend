@@ -57,7 +57,6 @@ public class PostService {
         return posts;
     }
 
-
     public Post getPostById(String id) {
         return repository.findById(id).orElse(null);
     }

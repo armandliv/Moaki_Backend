@@ -43,6 +43,10 @@ public class UserController {
     public ResponseEntity<User> createUser(@RequestBody UserRequest newUserRequest) {
         User newUser = userService.addImage(newUserRequest.getUser(),newUserRequest.getProfilePicturePath());
         User createdUser = userService.createUser(newUser);
+        // createdUser is null if the username already exists
+        if (createdUser == null) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
@@ -87,7 +91,6 @@ public class UserController {
     public boolean isFollowing(@PathVariable String username, @PathVariable String followedUsername) {
         return userService.isFollowing(username, followedUsername);
     }
-
 }
 /* UserRequest JSON example:
 {"user":{"username":"CosminUsername5","password":"CosminPassword","name":"CosminName","email":"CosminEmail","bio":"CosminBio","image":"null","postIds":["6575c50399a7eb702d4a6cdd"],"followingIds":["6575140d3dda26791a0b78c1"],"online":true}, "profilePicturePath":"C:/Users/Armand/Pictures/Saved Pictures/dimi.jpg"}

@@ -1,5 +1,6 @@
 package com.example.demo.post;
 
+import com.example.demo.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -33,7 +34,6 @@ public class PostController {
     public List<Post> getMorePosts(@PathVariable String username) {
         return postService.getMorePosts(username);
     }
-
 
     @GetMapping("/get/location/{locationId}")
     public List<Post> getPostsByLocation(@PathVariable String locationId) {

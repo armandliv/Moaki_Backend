@@ -30,6 +30,10 @@ public class UserService {
     }
 
     public User createUser(User newUser) {
+        //check if username already exists
+        if (repository.findByUsername(newUser.getUsername()) != null) {
+            return null;
+        }
         return repository.insert(newUser);
     }
 
@@ -137,7 +141,6 @@ public class UserService {
         }
         return false;
     }
-
 }
 
 //new User(
