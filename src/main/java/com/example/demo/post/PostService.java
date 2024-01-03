@@ -63,7 +63,7 @@ public class PostService {
         return false;
     }
 
-    public Post updatePost(String id, String username, String locationId, String description, String image, int score, int likes, List<String> commentIds) {
+    public Post updatePost(String id, String username, String locationId, String description, String image, int score, List<String> likeIds, List<String> commentIds) {
         Post post = repository.findById(id).orElse(null);
         if (post != null) {
             post.setUsername(username);
@@ -71,7 +71,7 @@ public class PostService {
             post.setDescription(description);
             post.setImage(image);
             post.setScore(score);
-            post.setLikes(likes);
+            post.setLikeIds(likeIds);
             post.setCommentIds(commentIds);
             repository.save(post);
             return post;
@@ -90,4 +90,24 @@ public class PostService {
         post.setImage(image);
         return post;
     }
+
+    public Post addLike(String postId, String username) {
+        String userId = userService.getUserByUsername(username).getId();
+        Post post = repository.findById(postId).orElse(null);
+        if (post != null) {
+            if(post.getLikeIds() == null)
+            {
+                post.setLikeIds(new ArrayList<>());
+            }
+            // check if user already liked the post
+            if (post.getLikeIds().contains(userId)) {
+                return null;
+            }
+            post.addLike(userId);
+            repository.save(post);
+            return post;
+        }
+        return null;
+    }
+
 }

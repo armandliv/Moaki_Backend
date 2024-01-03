@@ -52,8 +52,14 @@ public class PostController {
 
     @PutMapping("/edit/{id}")
     public Post updatePost(@PathVariable String id, @RequestBody Post updatedData) {
-        return postService.updatePost(id, updatedData.getUsername(), updatedData.getLocationId(), updatedData.getDescription(), updatedData.getImage(), updatedData.getScore(), updatedData.getLikes(), updatedData.getCommentIds());
+        return postService.updatePost(id, updatedData.getUsername(), updatedData.getLocationId(), updatedData.getDescription(), updatedData.getImage(), updatedData.getScore(), updatedData.getLikeIds(), updatedData.getCommentIds());
     }
+
+    @GetMapping("addLike/{postId}/{username}")
+    public Post addLike(@PathVariable String postId, @PathVariable String username) {
+        return postService.addLike(postId, username);
+    }
+
 }
 /* example of a post request:
 {"post":{"username":"CosminUsername5","locationId":"CosminLocationId","description":"CosminDescription","image":null,"score":5,"likes":1,"commentIds":["1","2","3"]}, "photoPath":"C:/Users/Armand/Pictures/Saved Pictures/dimi.jpg"}

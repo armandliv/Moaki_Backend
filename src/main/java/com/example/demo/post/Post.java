@@ -2,6 +2,7 @@ package com.example.demo.post;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.List;
+import java.util.ArrayList;
 @Document
 public class Post {
     @Id
@@ -11,31 +12,31 @@ public class Post {
     private String description;
     private String image;
     private int score;
-    private int likes;
+    private List<String> likeIds;
     private List<String> commentIds;
 
     public Post() {
 
     }
 
-    public Post(String id, String username, String locationId, String description, String image, int score, int likes, List<String> commentIds) {
+    public Post(String id, String username, String locationId, String description, String image, int score, List<String> likeIds, List<String> commentIds) {
         this.id = id;
         this.username = username;
         this.locationId = locationId;
         this.description = description;
         this.image = image;
         this.score = score;
-        this.likes = likes;
+        this.likeIds = likeIds;
         this.commentIds = commentIds;
     }
 
-    public Post(String username, String locationId, String description, String image, int score, int likes, List<String> commentIds) {
+    public Post(String username, String locationId, String description, String image, int score, List<String> likeIds, List<String> commentIds) {
         this.username = username;
         this.locationId = locationId;
         this.description = description;
         this.image = image;
         this.score = score;
-        this.likes = likes;
+        this.likeIds = likeIds;
         this.commentIds = commentIds;
     }
 
@@ -83,13 +84,22 @@ public class Post {
         this.score = score;
     }
 
-    public int getLikes() {
-        return likes;
+    public int getNumberOfLikes() {
+        if(likeIds == null) {
+            this.likeIds = new ArrayList<>();
+            return 0;
+        }
+        return likeIds.size();
     }
 
-    public void setLikes(int likes) {
-        this.likes = likes;
+    public List<String> getLikeIds() {
+        if(likeIds == null) {
+            this.likeIds = new ArrayList<>();
+        }
+        return likeIds;
     }
+
+    public void setLikeIds(List<String>likeIds) { this.likeIds = likeIds; }
 
     public List<String> getCommentIds() {
         return commentIds;
@@ -107,13 +117,9 @@ public class Post {
         this.commentIds.remove(commentId);
     }
 
-    public void incrementLikes() {
-        this.likes++;
-    }
+    public void addLike(String userId) { this.likeIds.add(userId); }
 
-    public void decrementLikes() {
-        this.likes--;
-    }
+    public void removeLike(String userId) { this.likeIds.remove(userId); }
 
     public void update(Post post) {
         this.username = post.getUsername();
@@ -121,7 +127,7 @@ public class Post {
         this.description = post.getDescription();
         this.image = post.getImage();
         this.score = post.getScore();
-        this.likes = post.getLikes();
+        this.likeIds = post.getLikeIds();
         this.commentIds = post.getCommentIds();
     }
 }
