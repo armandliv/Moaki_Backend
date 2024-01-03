@@ -110,4 +110,24 @@ public class PostService {
         return null;
     }
 
+    public Post removeLike(String postId, String username) {
+        String userId = userService.getUserByUsername(username).getId();
+        Post post = repository.findById(postId).orElse(null);
+        if (post != null) {
+            // check if user liked the post
+            if (!post.getLikeIds().contains(userId)) {
+                return null;
+            }
+            post.removeLike(userId);
+            if(post.getLikeIds() == null)
+            {
+                post.setLikeIds(new ArrayList<>());
+            }
+            repository.save(post);
+            return post;
+        }
+        return null;
+    }
+
+
 }

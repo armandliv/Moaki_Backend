@@ -60,6 +60,11 @@ public class PostController {
         return postService.addLike(postId, username);
     }
 
+    @GetMapping("removeLike/{postId}/{username}")
+    public Post removeLike(@PathVariable String postId, @PathVariable String username) {
+        return postService.removeLike(postId, username);
+    }
+
 }
 /* example of a post request:
 {"post":{"username":"CosminUsername5","locationId":"CosminLocationId","description":"CosminDescription","image":null,"score":5,"likes":1,"commentIds":["1","2","3"]}, "photoPath":"C:/Users/Armand/Pictures/Saved Pictures/dimi.jpg"}
