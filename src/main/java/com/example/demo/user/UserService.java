@@ -141,6 +141,25 @@ public class UserService {
         }
         return false;
     }
+
+    public List<String> getFollowingUsernames(String username) {
+        User user = repository.findByUsername(username);
+        List<String> usernames = new ArrayList<>();
+        if (user != null) {
+            if(user.getFollowingIds() == null)
+            {
+                user.setFollowingIds(new ArrayList<>());
+            }
+            for (String id : user.getFollowingIds()) {
+                User followedUser = repository.findById(id).orElse(null);
+                if (followedUser != null) {
+                    usernames.add(followedUser.getUsername());
+                }
+            }
+            return usernames;
+        }
+        return null;
+    }
 }
 
 //new User(
