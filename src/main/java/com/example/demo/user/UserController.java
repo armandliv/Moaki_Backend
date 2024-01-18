@@ -65,16 +65,28 @@ public class UserController {
     }
 
     @PutMapping("/edit/{username}")
-    public User updateUser(@PathVariable String username, @RequestBody UserRequest updatedUserRequest) {
+    public ResponseEntity<User> updateUser(@PathVariable String username, @RequestBody UserRequest updatedUserRequest, @RequestHeader("X-Username") String loggedInUsername) {
+        if (!userService.isLoggedInUser(username,loggedInUsername)) {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        }
         User updatedData = userService.addImage(updatedUserRequest.getUser(),updatedUserRequest.getProfilePicturePath());
         User user = userService.updateUser(username, updatedData.getName(), updatedData.getEmail(), updatedData.getBio(), updatedData.getImage());
-        return user;
+        if (user == null) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @GetMapping("/follow/{username}/{usernameToFollow}")
-    public User followUser(@PathVariable String username, @PathVariable String usernameToFollow) {
+    public ResponseEntity<User> followUser(@PathVariable String username, @PathVariable String usernameToFollow, @RequestHeader("X-Username") String loggedInUsername) {
+        if (!userService.isLoggedInUser(username,loggedInUsername)) {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        }
         User user = userService.followUser(username, usernameToFollow);
-        return user;
+        if (user == null) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @GetMapping("/unfollow/{username}/{usernameToUnfollow}")
