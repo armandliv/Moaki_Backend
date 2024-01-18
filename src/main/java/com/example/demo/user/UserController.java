@@ -96,6 +96,15 @@ public class UserController {
     public List<String>getFollowers(@PathVariable String username) {
         return userService.getFollowingUsernames(username);
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<User>login(@RequestBody User userRequest) {
+        User user = userService.login(userRequest.getUsername(), userRequest.getPassword());
+        if (user == null) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
 }
 /* UserRequest JSON example:
 {"user":{"username":"CosminUsername5","password":"CosminPassword","name":"CosminName","email":"CosminEmail","bio":"CosminBio","image":"null","postIds":["6575c50399a7eb702d4a6cdd"],"followingIds":["6575140d3dda26791a0b78c1"],"online":true}, "profilePicturePath":"C:/Users/Armand/Pictures/Saved Pictures/dimi.jpg"}
