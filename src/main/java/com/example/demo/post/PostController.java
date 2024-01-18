@@ -23,11 +23,8 @@ public class PostController {
     }
 
     @GetMapping("/userProfile/{username}")
-    public ResponseEntity<List<Post>> getPostsByUsername(@PathVariable String username, @RequestHeader("X-Username") String loggedInUsername) {
-        if(!postService.isLoggedInUser(username,loggedInUsername)) {
-            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-        }
-        return new ResponseEntity<>(postService.getUserPosts(username), HttpStatus.OK);
+    public List<Post> getPostsByUsername(@PathVariable String username) {
+        return postService.getUserPosts(username);
     }
 
     @GetMapping("/userFeed/{username}")
@@ -87,7 +84,7 @@ public class PostController {
 
     @GetMapping("addLike/{postId}/{username}")
     public ResponseEntity<Post> addLike(@PathVariable String postId, @PathVariable String username, @RequestHeader("X-Username") String loggedInUsername) {
-        if(!postService.isPostIdOfLoggedInUser(postId, loggedInUsername)) {
+        if(!postService.isLoggedInUser(username, loggedInUsername)) {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         }
         return new ResponseEntity<>(postService.addLike(postId, username), HttpStatus.OK);
@@ -95,7 +92,7 @@ public class PostController {
 
     @GetMapping("removeLike/{postId}/{username}")
     public ResponseEntity<Post> removeLike(@PathVariable String postId, @PathVariable String username, @RequestHeader("X-Username") String loggedInUsername) {
-        if(!postService.isPostIdOfLoggedInUser(postId, loggedInUsername)) {
+        if(!postService.isLoggedInUser(username, loggedInUsername)) {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         }
         return new ResponseEntity<>(postService.removeLike(postId, username), HttpStatus.OK);
