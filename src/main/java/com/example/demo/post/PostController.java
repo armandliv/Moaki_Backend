@@ -31,13 +31,19 @@ public class PostController {
     }
 
     @GetMapping("/userFeed/{username}")
-    public List<Post> getFollowingPosts(@PathVariable String username) {
-        return postService.getFollowingPosts(username);
+    public ResponseEntity<List<Post>> getFollowingPosts(@PathVariable String username, @RequestHeader("X-Username") String loggedInUsername) {
+        if(!postService.isLoggedInUser(username,loggedInUsername)) {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity<>(postService.getFollowingPosts(username), HttpStatus.OK);
     }
 
     @GetMapping("/morePosts/{username}")
-    public List<Post> getMorePosts(@PathVariable String username) {
-        return postService.getMorePosts(username);
+    public ResponseEntity<List<Post>> getMorePosts(@PathVariable String username, @RequestHeader("X-Username") String loggedInUsername) {
+        if(!postService.isLoggedInUser(username,loggedInUsername)) {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity<>(postService.getMorePosts(username), HttpStatus.OK);
     }
 
     @GetMapping("/get/location/{locationId}")
@@ -51,29 +57,48 @@ public class PostController {
     }
 
     @PostMapping("/add")
-    public Post createPost(@RequestBody Post newPostRequest) {
-        return postService.createPost(newPostRequest);
+    public ResponseEntity<Post> createPost(@RequestBody Post newPostRequest, @RequestHeader("X-Username") String loggedInUsername) {
+        if(!postService.isPostOfLoggedInUser(newPostRequest, loggedInUsername)) {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity<>(postService.createPost(newPostRequest), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deletePost(@PathVariable String id) {
+    public ResponseEntity<?> deletePost(@PathVariable String id, @RequestHeader("X-Username") String loggedInUsername) {
+        if(!postService.isPostIdOfLoggedInUser(id, loggedInUsername)) {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        }
         boolean success = postService.deletePost(id);
         System.out.println(success);
+        if(success) {
+            return new ResponseEntity<>(null, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
     @PutMapping("/edit/{id}")
-    public Post updatePost(@PathVariable String id, @RequestBody Post updatedData) {
-        return postService.updatePost(id, updatedData.getUsername(), updatedData.getLocationId(), updatedData.getDescription(), updatedData.getImage(), updatedData.getScore(), updatedData.getLikeIds(), updatedData.getCommentIds());
+    public ResponseEntity<Post> updatePost(@PathVariable String id, @RequestBody Post updatedData, @RequestHeader("X-Username") String loggedInUsername) {
+        if(!postService.isPostIdOfLoggedInUser(id, loggedInUsername)) {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity<>(postService.updatePost(id, updatedData.getUsername(), updatedData.getLocationId(), updatedData.getDescription(), updatedData.getImage(), updatedData.getScore(), updatedData.getLikeIds(), updatedData.getCommentIds()), HttpStatus.OK);
     }
 
     @GetMapping("addLike/{postId}/{username}")
-    public Post addLike(@PathVariable String postId, @PathVariable String username) {
-        return postService.addLike(postId, username);
+    public ResponseEntity<Post> addLike(@PathVariable String postId, @PathVariable String username, @RequestHeader("X-Username") String loggedInUsername) {
+        if(!postService.isPostIdOfLoggedInUser(postId, loggedInUsername)) {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity<>(postService.addLike(postId, username), HttpStatus.OK);
     }
 
     @GetMapping("removeLike/{postId}/{username}")
-    public Post removeLike(@PathVariable String postId, @PathVariable String username) {
-        return postService.removeLike(postId, username);
+    public ResponseEntity<Post> removeLike(@PathVariable String postId, @PathVariable String username, @RequestHeader("X-Username") String loggedInUsername) {
+        if(!postService.isPostIdOfLoggedInUser(postId, loggedInUsername)) {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity<>(postService.removeLike(postId, username), HttpStatus.OK);
     }
 
     @GetMapping("addComment/{postId}/{commentId}")
