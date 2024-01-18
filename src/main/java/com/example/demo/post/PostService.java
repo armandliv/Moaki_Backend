@@ -1,6 +1,8 @@
 package com.example.demo.post;
 import com.example.demo.user.UserService;
 import com.example.demo.user.User;
+import com.example.demo.comment.Comment;
+import com.example.demo.comment.CommentService;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -12,14 +14,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 
+
 @Service
 public class PostService {
     private final PostRepository repository;
     private final UserService userService;
+    private final CommentService commentService;
     @Autowired
-    public PostService(PostRepository repository, UserService userService) {
+    public PostService(PostRepository repository, UserService userService, CommentService commentService) {
         this.repository = repository;
         this.userService = userService;
+        this.commentService = commentService;
     }
 
     public List<Post> getPosts() {
@@ -218,10 +223,22 @@ public class PostService {
         return username.equals(loggedInUsername);
     }
 
-    public boolean isPostOfLoggedInUser(String postId, String loggedInUsername) {
+    public boolean isPostIdOfLoggedInUser(String postId, String loggedInUsername) {
         Post post = repository.findById(postId).orElse(null);
         if (post != null) {
             return post.getUsername().equals(loggedInUsername);
+        }
+        return false;
+    }
+
+    public boolean isPostOfLoggedInUser(Post post, String loggedInUsername) {
+        return post.getUsername().equals(loggedInUsername);
+    }
+
+    public boolean isCommentOfLoggedInUser(String commentId, String loggedInUsername) {
+        Comment comment = commentService.getCommentById(commentId);
+        if (comment != null) {
+            return comment.getUsername().equals(loggedInUsername);
         }
         return false;
     }

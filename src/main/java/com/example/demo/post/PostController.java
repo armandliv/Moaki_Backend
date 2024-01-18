@@ -82,8 +82,11 @@ public class PostController {
     }
 
     @GetMapping("removeComment/{postId}/{commentId}")
-    public Post removeComment(@PathVariable String postId, @PathVariable String commentId) {
-        return postService.removeComment(postId, commentId);
+    public ResponseEntity<Post> removeComment(@PathVariable String postId, @PathVariable String commentId, @RequestHeader("X-Username") String loggedInUsername) {
+        if(!postService.isCommentOfLoggedInUser(commentId, loggedInUsername)) {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity<>(postService.removeComment(postId, commentId), HttpStatus.OK);
     }
 
     @GetMapping("/isLiked/{postId}/{username}")
