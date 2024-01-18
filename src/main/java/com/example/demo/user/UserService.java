@@ -160,6 +160,14 @@ public class UserService {
         }
         return null;
     }
+
+    public User login(String username, String password) {
+        User user = repository.findByUsername(username);
+        if (user != null && user.getPassword().equals(password)) {
+            return user;
+        }
+        return null;
+    }
 }
 
 //new User(
