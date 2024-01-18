@@ -78,21 +78,30 @@ public class UserController {
     }
 
     @GetMapping("/unfollow/{username}/{usernameToUnfollow}")
-    public User unfollowUser(@PathVariable String username, @PathVariable String usernameToUnfollow) {
+    public ResponseEntity<User> unfollowUser(@PathVariable String username, @PathVariable String usernameToUnfollow, @RequestHeader("X-Username") String loggedInUsername) {
+        if (!userService.isLoggedInUser(username,loggedInUsername)) {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        }
         User user = userService.unfollowUser(username, usernameToUnfollow);
-        return user;
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @GetMapping("/addPost/{username}/{postId}")
-    public User addPost(@PathVariable String username, @PathVariable String postId) {
+    public ResponseEntity<User> addPost(@PathVariable String username, @PathVariable String postId, @RequestHeader("X-Username") String loggedInUsername) {
+        if (!userService.isLoggedInUser(username,loggedInUsername)) {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        }
         User user = userService.addPostId(username, postId);
-        return user;
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @GetMapping("/removePost/{username}/{postId}")
-    public User removePost(@PathVariable String username, @PathVariable String postId) {
+    public ResponseEntity<User> removePost(@PathVariable String username, @PathVariable String postId, @RequestHeader("X-Username") String loggedInUsername) {
+        if (!userService.isLoggedInUser(username,loggedInUsername)) {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        }
         User user = userService.removePostId(username, postId);
-        return user;
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @GetMapping("/isFollowing/{username}/{followedUsername}")
