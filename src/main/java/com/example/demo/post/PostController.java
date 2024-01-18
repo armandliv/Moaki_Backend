@@ -102,8 +102,11 @@ public class PostController {
     }
 
     @GetMapping("addComment/{postId}/{commentId}")
-    public Post addComment(@PathVariable String postId, @PathVariable String commentId) {
-        return postService.addComment(postId, commentId);
+    public ResponseEntity<Post> addComment(@PathVariable String postId, @PathVariable String commentId, @RequestHeader("X-Username") String loggedInUsername) {
+        if(!postService.isCommentOfLoggedInUser(commentId, loggedInUsername)) {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity<>(postService.addComment(postId, commentId), HttpStatus.OK);
     }
 
     @GetMapping("removeComment/{postId}/{commentId}")
