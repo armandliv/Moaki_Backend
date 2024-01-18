@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 
 import java.time.LocalDate;
@@ -51,9 +52,16 @@ public class UserController {
     }
 
     @DeleteMapping("/delete/{username}")
-    public void deleteUser(@PathVariable String username) {
+    public ResponseEntity<?> deleteUser(@PathVariable String username, @RequestHeader("X-Username") String loggedInUsername) {
+        if (!userService.isLoggedInUser(username,loggedInUsername)) {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        }
         boolean success = userService.deleteUser(username);
         System.out.println(success);
+        if (success) {
+            return new ResponseEntity<>(true, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
     @PutMapping("/edit/{username}")

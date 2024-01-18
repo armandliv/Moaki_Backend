@@ -168,6 +168,10 @@ public class UserService {
         }
         return null;
     }
+
+    public boolean isLoggedInUser(String username, String loggedInUsername) {
+        return username.equals(loggedInUsername);
+    }
 }
 
 //new User(
