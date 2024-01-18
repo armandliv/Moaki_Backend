@@ -36,4 +36,16 @@ public class CommentService {
         }
         return null;
     }
+
+    public boolean isCommentIdOfLoggedInUser(String commentId, String loggedInUsername) {
+        Comment comment = getCommentById(commentId);
+        if (comment != null) {
+            return comment.getUsername().equals(loggedInUsername);
+        }
+        return false;
+    }
+
+    public boolean isCommentOfLoggedInUser(Comment comment, String loggedInUsername) {
+        return comment.getUsername().equals(loggedInUsername);
+    }
 }

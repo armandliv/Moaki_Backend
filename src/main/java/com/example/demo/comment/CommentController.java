@@ -1,8 +1,10 @@
 package com.example.demo.comment;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
+import org.springframework.http.HttpStatus;
 
 @RestController
 @RequestMapping(path = "comment")
@@ -26,20 +28,31 @@ public class CommentController {
         }
 
         @PostMapping("/add")
-        public Comment createComment(@RequestBody Comment newComment) {
-            Comment createdComment = commentService.createComment(newComment);
-            return createdComment;
+        public ResponseEntity<Comment> createComment(@RequestBody Comment newComment, @RequestHeader("X-Username") String loggedInUsername) {
+            if(!commentService.isCommentOfLoggedInUser(newComment, loggedInUsername)) {
+                return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+            }
+            return new ResponseEntity<>(commentService.createComment(newComment), HttpStatus.CREATED);
         }
 
         @DeleteMapping("/delete/{id}")
-        public boolean deleteComment(@PathVariable String id) {
+        public ResponseEntity<?> deleteComment(@PathVariable String id, @RequestHeader("X-Username") String loggedInUsername) {
+            if(!commentService.isCommentIdOfLoggedInUser(id, loggedInUsername)) {
+                return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+            }
             boolean success = commentService.deleteComment(id);
-            return success;
+            if(success)
+            {
+                return new ResponseEntity<>(null,HttpStatus.OK);
+            }
+            return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
         }
 
         @PutMapping("/edit/{id}")
-        public Comment updateComment(@PathVariable String id, @RequestBody Comment updatedData) {
-            Comment comment = commentService.updateComment(id, updatedData.getContent());
-            return comment;
+        public ResponseEntity<Comment> updateComment(@PathVariable String id, @RequestBody Comment updatedData, @RequestHeader("X-Username") String loggedInUsername) {
+            if(!commentService.isCommentIdOfLoggedInUser(id, loggedInUsername)) {
+                return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+            }
+            return new ResponseEntity<>(commentService.updateComment(id, updatedData.getContent()), HttpStatus.OK);
         }
 }
