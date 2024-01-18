@@ -213,4 +213,16 @@ public class PostService {
         }
         return null;
     }
+
+    public boolean isLoggedInUser(String username, String loggedInUsername) {
+        return username.equals(loggedInUsername);
+    }
+
+    public boolean isPostOfLoggedInUser(String postId, String loggedInUsername) {
+        Post post = repository.findById(postId).orElse(null);
+        if (post != null) {
+            return post.getUsername().equals(loggedInUsername);
+        }
+        return false;
+    }
 }

@@ -2,6 +2,8 @@ package com.example.demo.post;
 
 import com.example.demo.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -21,8 +23,11 @@ public class PostController {
     }
 
     @GetMapping("/userProfile/{username}")
-    public List<Post> getPostsByUsername(@PathVariable String username) {
-        return postService.getUserPosts(username);
+    public ResponseEntity<List<Post>> getPostsByUsername(@PathVariable String username, @RequestHeader("X-Username") String loggedInUsername) {
+        if(!postService.isLoggedInUser(username,loggedInUsername)) {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity<>(postService.getUserPosts(username), HttpStatus.OK);
     }
 
     @GetMapping("/userFeed/{username}")
