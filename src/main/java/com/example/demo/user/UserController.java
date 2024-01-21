@@ -41,8 +41,7 @@ public class UserController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<User> createUser(@RequestBody UserRequest newUserRequest) {
-        User newUser = userService.addImage(newUserRequest.getUser(),newUserRequest.getProfilePicturePath());
+    public ResponseEntity<User> createUser(@RequestBody User newUser) {
         User createdUser = userService.createUser(newUser);
         // createdUser is null if the username already exists
         if (createdUser == null) {
@@ -65,11 +64,10 @@ public class UserController {
     }
 
     @PutMapping("/edit/{username}")
-    public ResponseEntity<User> updateUser(@PathVariable String username, @RequestBody UserRequest updatedUserRequest, @RequestHeader("X-Username") String loggedInUsername) {
+    public ResponseEntity<User> updateUser(@PathVariable String username, @RequestBody User updatedData, @RequestHeader("X-Username") String loggedInUsername) {
         if (!userService.isLoggedInUser(username,loggedInUsername)) {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         }
-        User updatedData = userService.addImage(updatedUserRequest.getUser(),updatedUserRequest.getProfilePicturePath());
         User user = userService.updateUser(username, updatedData.getName(), updatedData.getEmail(), updatedData.getBio(), updatedData.getImage());
         if (user == null) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
