@@ -22,48 +22,35 @@ public class User {
 
     }
 
-//    this is useless
-//    public User(String username, String password) {
-//        this.username = username;
-//        this.password = password;
-//        this.name = "";
-//        this.email = "";
-//        this.bio = "";
-//        this.image = "";
-//        this.isOnline = false;
-//        this.postIds = new ArrayList<>();
-//        this.followingIds = new ArrayList<>();
-//    }
-
-//    public User(String username, String password, String name, String email, String bio, String image, boolean isOnline, List<String> postIds, List<String> followingIds) {
-//        this.username = username;
-//        this.password = password;
-//        if(name==null)
-//            this.name = "";
-//        else
-//            this.name = name;
-//        if(email==null)
-//            this.email = "";
-//        else
-//            this.email = email;
-//        if(bio==null)
-//            this.bio = "";
-//        else
-//            this.bio = bio;
-//        if(image==null)
-//            this.image = "";
-//        else
-//            this.image = image;
-//        this.isOnline = isOnline;
-//        if(postIds==null)
-//            this.postIds = new ArrayList<>();
-//        else
-//            this.postIds = postIds;
-//        if(followingIds==null)
-//            this.followingIds = new ArrayList<>();
-//        else
-//            this.followingIds = followingIds;
-//    }
+    public User(String username, String password, String name, String email, String bio, String image, boolean isOnline, List<String> postIds, List<String> followingIds) {
+        this.username = username;
+        this.password = password;
+        if(name==null)
+            this.name = "";
+        else
+            this.name = name;
+        if(email==null)
+            this.email = "";
+        else
+            this.email = email;
+        if(bio==null)
+            this.bio = "";
+        else
+            this.bio = bio;
+        if(image==null)
+            this.image = "";
+        else
+            this.image = image;
+        this.isOnline = isOnline;
+        if(postIds==null)
+            this.postIds = new ArrayList<>();
+        else
+            this.postIds = postIds;
+        if(followingIds==null)
+            this.followingIds = new ArrayList<>();
+        else
+            this.followingIds = followingIds;
+    }
 
     public User(String id, String username, String password, String name, String email, String bio, String image , boolean isOnline, List<String> postIds, List<String> followingIds) {
         this.id = id;
@@ -78,17 +65,17 @@ public class User {
         this.followingIds = followingIds;
     }
 
-    public User(String username, String password, String name, String email, String bio, String image, boolean isOnline, List<String> postIds, List<String> followingIds) {
-        this.username = username;
-        this.password = password;
-        this.name = name;
-        this.email = email;
-        this.bio = bio;
-        this.image = image;
-        this.isOnline = isOnline;
-        this.postIds = postIds;
-        this.followingIds = followingIds;
-    }
+//    public User(String username, String password, String name, String email, String bio, String image, boolean isOnline, List<String> postIds, List<String> followingIds) {
+//        this.username = username;
+//        this.password = password;
+//        this.name = name;
+//        this.email = email;
+//        this.bio = bio;
+//        this.image = image;
+//        this.isOnline = isOnline;
+//        this.postIds = postIds;
+//        this.followingIds = followingIds;
+//    }
 
     public String getId() {
         return id;
