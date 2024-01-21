@@ -22,6 +22,7 @@ public class User {
 
     }
 
+//    this is useless
 //    public User(String username, String password) {
 //        this.username = username;
 //        this.password = password;
