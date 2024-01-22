@@ -75,8 +75,14 @@ public class PostService {
     }
 
     public boolean deletePost(String id) {
+
         Post post = repository.findById(id).orElse(null);
         if (post != null) {
+            // Delete all comments associated with the post first
+            List<String> commentIds = post.getCommentIds();
+            for (String commId: commentIds) {
+                commentService.deleteComment(commId);
+            }
             repository.delete(post);
             return true;
         }
