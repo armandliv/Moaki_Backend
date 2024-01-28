@@ -14,7 +14,7 @@ import java.util.Map;
 @Service
 public class GPTService {
 
-    private String apiKey = "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";
+    private String apiKey = "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";
 
     private final String openaiApiUrl = "https://api.openai.com/v1/chat/completions";
 
